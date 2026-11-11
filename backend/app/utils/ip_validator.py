@@ -56,3 +56,4 @@ def is_ip_allowed(client_ip_str: str, allowed_rules: List[str]) -> bool:
             continue
 
     return False
+

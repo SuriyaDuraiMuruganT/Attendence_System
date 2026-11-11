@@ -73,3 +73,4 @@ def get_my_requests(
     ).order_by(AttendanceCorrectionRequest.created_at.desc()).all()
 
     return [format_correction_response(r, employee) for r in requests]
+

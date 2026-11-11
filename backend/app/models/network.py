@@ -12,3 +12,4 @@ class OfficeNetworkSetting(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime(timezone=True), default=get_ist_now, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=get_ist_now, onupdate=get_ist_now, nullable=False)
+

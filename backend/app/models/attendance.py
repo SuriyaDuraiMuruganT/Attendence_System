@@ -28,3 +28,4 @@ class Attendance(Base):
     __table_args__ = (
         UniqueConstraint("employee_id", "attendance_date", name="uq_employee_attendance_date"),
     )
+

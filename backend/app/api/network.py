@@ -99,3 +99,4 @@ def delete_network_setting(
     db.delete(setting)
     db.commit()
     return {"message": "Network rule deleted successfully."}
+

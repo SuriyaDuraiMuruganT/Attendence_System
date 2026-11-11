@@ -25,3 +25,4 @@ databases:
     databaseName: attendance_prod
     user: attendance_user
     plan: free
+

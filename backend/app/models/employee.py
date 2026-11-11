@@ -23,3 +23,4 @@ class Employee(Base):
     user = relationship("User", back_populates="employee_profile")
     attendances = relationship("Attendance", back_populates="employee", cascade="all, delete-orphan")
     correction_requests = relationship("AttendanceCorrectionRequest", back_populates="employee", cascade="all, delete-orphan")
+

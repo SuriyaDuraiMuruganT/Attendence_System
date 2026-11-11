@@ -23,3 +23,4 @@ class AdminDashboardStats(BaseModel):
     currently_working: int
     incomplete_attendance: int
     pending_corrections: int
+

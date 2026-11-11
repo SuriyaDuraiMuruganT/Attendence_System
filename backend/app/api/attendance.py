@@ -141,3 +141,4 @@ def get_my_attendance_history(
 
     records = query.all()
     return [format_attendance_response(r, employee) for r in records]
+

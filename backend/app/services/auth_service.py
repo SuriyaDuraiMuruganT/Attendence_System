@@ -99,3 +99,4 @@ def require_employee(
             detail="Employee account is deactivated",
         )
     return current_user, employee
+

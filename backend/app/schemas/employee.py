@@ -28,3 +28,4 @@ class EmployeeResponse(BaseModel):
 
 class EmployeeStatusUpdate(BaseModel):
     is_active: bool
+

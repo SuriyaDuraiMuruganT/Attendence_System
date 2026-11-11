@@ -54,3 +54,4 @@ def check_office_network(request: Request, db: Session, enforce: bool = True) ->
         )
         
     return client_ip, is_allowed
+

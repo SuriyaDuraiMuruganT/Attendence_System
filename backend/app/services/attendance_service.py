@@ -115,3 +115,4 @@ def mark_out(
     db.commit()
     db.refresh(attendance)
     return attendance
+

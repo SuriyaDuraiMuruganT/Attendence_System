@@ -174,3 +174,4 @@ Verified test cases:
 6. `test_6_duplicate_out_prevention` – Validates 400 Bad Request if marking OUT twice on the same day.
 7. `test_7_in_after_1030_requires_reason` – Validates mandatory late arrival reason when checking in after 10:30 AM IST.
 8. `test_8_correction_window_3_days_and_rejection_approval` – Validates 3-calendar-day correction window, expiration after 3 days, admin review, and persistence of corrected attendance records.
+

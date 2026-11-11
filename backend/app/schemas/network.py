@@ -24,3 +24,4 @@ class NetworkSettingResponse(BaseModel):
 
     class Config:
         from_attributes = True
+

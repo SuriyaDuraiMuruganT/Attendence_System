@@ -273,3 +273,4 @@ def test_8_correction_window_3_days_and_rejection_approval(monkeypatch):
     assert att.is_correction == True
     assert att.total_hours == 8.0
     db.close()
+

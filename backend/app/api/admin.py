@@ -365,3 +365,4 @@ def get_audit_logs(
             created_at=log.created_at
         ))
     return results
+

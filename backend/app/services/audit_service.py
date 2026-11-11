@@ -25,3 +25,4 @@ def log_admin_action(
     db.commit()
     db.refresh(audit_entry)
     return audit_entry
+

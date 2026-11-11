@@ -23,3 +23,4 @@ class UserInfoResponse(BaseModel):
     email: Optional[str] = None
     department: Optional[str] = None
     designation: Optional[str] = None
+

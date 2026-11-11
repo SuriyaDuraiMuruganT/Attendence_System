@@ -17,3 +17,4 @@ class AdminAuditLog(Base):
 
     # Relationships
     admin = relationship("User", back_populates="audit_logs")
+

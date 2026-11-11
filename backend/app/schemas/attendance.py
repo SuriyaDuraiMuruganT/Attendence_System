@@ -44,3 +44,4 @@ class AttendanceFilter(BaseModel):
     month: Optional[int] = None
     year: Optional[int] = None
     employee_id: Optional[int] = None
+

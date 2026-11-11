@@ -24,3 +24,4 @@ class AttendanceCorrectionRequest(Base):
     employee = relationship("Employee", back_populates="correction_requests")
     attendance = relationship("Attendance", back_populates="correction_requests")
     admin = relationship("User", foreign_keys=[admin_id])
+

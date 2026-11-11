@@ -18,3 +18,4 @@ class User(Base):
     # Relationships
     employee_profile = relationship("Employee", back_populates="user", uselist=False, cascade="all, delete-orphan")
     audit_logs = relationship("AdminAuditLog", back_populates="admin")
+
