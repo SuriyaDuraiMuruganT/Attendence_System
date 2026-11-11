@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
 from app.models.employee import Employee
 from app.schemas.auth import LoginRequest, TokenResponse, UserInfoResponse
 from app.services.auth_service import verify_password, create_access_token, get_current_user
+from app.services.network_service import check_office_network, OFFICE_NETWORK_ERROR_MESSAGE
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/login", response_model=TokenResponse)
-def login(payload: LoginRequest, db: Session = Depends(get_db)):
+def login(payload: LoginRequest, request: Request, db: Session = Depends(get_db)):
     employee_id = payload.employee_id.strip()
     user = db.query(User).filter(User.employee_id == employee_id).first()
     
@@ -24,6 +25,15 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Your account is deactivated. Please contact administrator."
         )
+
+    # Strict Office Network Enforcement for Employees
+    if user.role != "ADMIN":
+        client_ip, is_allowed = check_office_network(request, db, enforce=False)
+        if not is_allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Connect to office Wi-Fi. Login is only permitted from the authorized office network (JioFiber-Growbytee5G). Your IP: {client_ip}"
+            )
 
     # Fetch employee profile details if present
     full_name = "Administrator" if user.role == "ADMIN" else user.employee_id

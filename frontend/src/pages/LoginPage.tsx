@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../api/client';
-import { Building2, Lock, User, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Building2, Lock, User, AlertCircle, ArrowRight, CheckCircle2, Wifi, WifiOff } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const [employeeId, setEmployeeId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [networkStatus, setNetworkStatus] = useState<{
+    client_ip: string;
+    is_authorized_office_network: boolean;
+    message: string;
+  } | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    api.get<{
+      client_ip: string;
+      is_authorized_office_network: boolean;
+      message: string;
+    }>('/network/status')
+      .then(setNetworkStatus)
+      .catch(() => {
+        // silently fallback if server unreachable yet
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +98,29 @@ export const LoginPage: React.FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
         <div className="bg-white py-8 px-6 shadow-sm border border-cream-300 rounded-xl sm:px-10">
+          {/* Wi-Fi Verification Banner */}
+          {networkStatus && (
+            networkStatus.is_authorized_office_network ? (
+              <div className="mb-5 p-3 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center space-x-2.5 text-forest text-xs font-medium">
+                <Wifi className="w-4 h-4 text-forest flex-shrink-0" />
+                <span className="truncate">Connected to Office Wi-Fi (JioFiber-Growbytee5G)</span>
+              </div>
+            ) : (
+              <div className="mb-5 p-3.5 bg-amber-50 border border-amber-300 rounded-lg flex items-start space-x-2.5 text-amber-900 text-xs">
+                <WifiOff className="w-5 h-5 flex-shrink-0 text-amber-600 mt-0.5" />
+                <div>
+                  <p className="font-bold text-sm text-amber-900">Connect to Office Wi-Fi</p>
+                  <p className="mt-0.5 text-amber-800">
+                    You are currently on an unauthorized network. Please connect to <strong>JioFiber-Growbytee5G</strong> to log in.
+                  </p>
+                  <p className="text-[11px] font-mono text-amber-700 mt-1">
+                    Detected IP: {networkStatus.client_ip}
+                  </p>
+                </div>
+              </div>
+            )
+          )}
+
           {error && (
             <div className="mb-6 p-3.5 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-3 text-red-700 text-sm">
               <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-red-600" />

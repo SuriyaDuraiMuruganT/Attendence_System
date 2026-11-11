@@ -347,9 +347,23 @@ export const EmployeeDashboard: React.FC = () => {
           {/* Card 3: Mark IN / OUT Action Controls */}
           <div className="bg-white rounded-xl border border-cream-300 p-6 shadow-sm flex flex-col justify-between">
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Mark Attendance
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  Mark Attendance
+                </span>
+                {todayStatus && (
+                  <span className={`inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-bold ${
+                    todayStatus.is_office_network
+                      ? 'bg-emerald-100 text-forest'
+                      : 'bg-amber-100 text-amber-800'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${
+                      todayStatus.is_office_network ? 'bg-forest' : 'bg-amber-500'
+                    }`}></span>
+                    <span>{todayStatus.is_office_network ? 'Office Wi-Fi' : 'Not on Office Wi-Fi'}</span>
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-slate-500 mt-1">
                 Authorized office network verification required.
               </p>
@@ -359,22 +373,34 @@ export const EmployeeDashboard: React.FC = () => {
               {todayStatus?.status === 'NOT_CHECKED_IN' && (
                 <button
                   onClick={handleMarkInClick}
-                  disabled={actionLoading}
-                  className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-forest hover:bg-forest-dark text-white rounded-lg font-semibold text-sm shadow-sm transition-all disabled:opacity-50"
+                  disabled={actionLoading || !todayStatus?.is_office_network}
+                  className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-forest hover:bg-forest-dark text-white rounded-lg font-semibold text-sm shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <LogIn className="w-4 h-4" />
-                  <span>{actionLoading ? 'Recording IN...' : 'MARK IN'}</span>
+                  <span>
+                    {actionLoading
+                      ? 'Recording IN...'
+                      : !todayStatus?.is_office_network
+                      ? 'Office Wi-Fi Required'
+                      : 'MARK IN'}
+                  </span>
                 </button>
               )}
 
               {todayStatus?.status === 'WORKING' && (
                 <button
                   onClick={handleMarkOutClick}
-                  disabled={actionLoading}
-                  className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-amber-700 hover:bg-amber-800 text-white rounded-lg font-semibold text-sm shadow-sm transition-all disabled:opacity-50"
+                  disabled={actionLoading || !todayStatus?.is_office_network}
+                  className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-amber-700 hover:bg-amber-800 text-white rounded-lg font-semibold text-sm shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>{actionLoading ? 'Recording OUT...' : 'MARK OUT'}</span>
+                  <span>
+                    {actionLoading
+                      ? 'Recording OUT...'
+                      : !todayStatus?.is_office_network
+                      ? 'Office Wi-Fi Required'
+                      : 'MARK OUT'}
+                  </span>
                 </button>
               )}
 

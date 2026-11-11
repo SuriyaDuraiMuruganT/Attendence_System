@@ -1,4 +1,5 @@
 import ipaddress
+import socket
 from typing import List, Optional
 from fastapi import Request
 from app.config import settings
@@ -29,6 +30,17 @@ def extract_client_ip(request: Request) -> str:
     if x_real_ip:
         return x_real_ip.strip()
 
+    # If accessed locally via loopback, resolve to the host machine's active network adapter IP
+    # so that switching Wi-Fi networks on the host machine is accurately detected.
+    if peer_ip in ("127.0.0.1", "::1", "localhost"):
+        try:
+            _, _, local_ips = socket.gethostbyname_ex(socket.gethostname())
+            active_ips = [ip for ip in local_ips if not ip.startswith("127.")]
+            if active_ips:
+                return active_ips[0]
+        except Exception:
+            pass
+
     return peer_ip
 
 def is_ip_allowed(client_ip_str: str, allowed_rules: List[str]) -> bool:
@@ -48,11 +60,11 @@ def is_ip_allowed(client_ip_str: str, allowed_rules: List[str]) -> bool:
         if not rule:
             continue
         try:
-            # Handles both single IP '192.168.1.1' and CIDR '192.168.1.0/24'
+            # Handles both single IP '49.37.201.144' and CIDR '49.37.201.0/24', IPv4 and IPv6
             network = ipaddress.ip_network(rule, strict=False)
-            if client_ip in network:
+            if client_ip.version == network.version and client_ip in network:
                 return True
-        except ValueError:
+        except (ValueError, TypeError):
             continue
 
     return False

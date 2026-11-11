@@ -6,8 +6,7 @@ from app.models.network import OfficeNetworkSetting
 from app.utils.ip_validator import extract_client_ip, is_ip_allowed
 
 OFFICE_NETWORK_ERROR_MESSAGE = (
-    "Attendance can only be marked from the authorized office network. "
-    "Please connect to the office Wi-Fi or contact your administrator."
+    "Connect to office Wi-Fi. Access is only permitted from the authorized office network (JioFiber-Growbytee5G)."
 )
 
 def get_allowed_network_rules(db: Session) -> List[str]:

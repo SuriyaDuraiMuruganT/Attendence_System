@@ -111,10 +111,11 @@ def seed_database():
 
         # 4. Seed Office Network Rules
         rules = [
-            ("Loopback Localhost IPv4", "127.0.0.1/32", "Authorized developer and local machine testing"),
-            ("Loopback Localhost IPv6", "::1/128", "Authorized IPv6 loopback"),
-            ("HQ Wi-Fi Primary Subnet", "192.168.0.0/16", "Main headquarters office Wi-Fi range"),
-            ("HQ Corporate LAN Subnet", "10.0.0.0/8", "Internal office Ethernet and VPN range"),
+            ("Jio Office Wi-Fi (IPv4)", "49.37.201.144", "Reliance Jio Public IPv4"),
+            ("Jio Office Wi-Fi Subnet (IPv4)", "49.37.201.0/24", "Reliance Jio IPv4 Subnet"),
+            ("Jio Office Wi-Fi (IPv6)", "2405:201:e029:f00c:2dc9:10f8:e8d0:dff9", "Reliance Jio Public IPv6"),
+            ("Jio Office Wi-Fi Subnet (IPv6)", "2405:201:e029:f00c::/64", "Reliance Jio IPv6 Subnet Prefix"),
+            ("Office LAN Router", "192.168.29.0/24", "Local Office LAN Subnet"),
         ]
 
         for name, cidr, desc in rules:

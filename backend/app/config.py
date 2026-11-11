@@ -20,9 +20,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str = Field(default="sqlite:///./attendance.db")
     
     # Network Restriction
-    # Approved office public IPs or CIDR blocks
+    # Approved office public IPs or CIDR blocks (configured via .env or Admin Dashboard)
     APPROVED_OFFICE_IPS: Union[str, List[str]] = Field(
-        default=["127.0.0.1", "::1", "10.0.0.0/8", "192.168.0.0/16", "172.16.0.0/12"]
+        default=[]
     )
     ENFORCE_OFFICE_NETWORK: bool = True
     
