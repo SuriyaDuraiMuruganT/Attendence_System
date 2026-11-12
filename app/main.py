@@ -9,3 +9,4 @@ if os.path.exists(backend_dir):
 
 # Import the actual FastAPI app from backend/app/main.py
 from app.main import app
+

@@ -10,16 +10,14 @@ from alembic import context
 # Ensure app is in path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from app.config import settings
-from app.database import Base
+from app.database import Base, sanitize_db_url
 import app.models  # load all models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-db_url = settings.DATABASE_URL
-if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+db_url = sanitize_db_url(settings.DATABASE_URL)
 config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
