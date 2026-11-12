@@ -13,7 +13,9 @@ def sanitize_db_url(url: str) -> str:
     if url.startswith("DATABASE_URL="):
         url = url.replace("DATABASE_URL=", "", 1).strip().strip("'\"")
     if url.startswith("postgres://"):
-        url = url.replace("postgres://", "postgresql://", 1)
+        url = url.replace("postgres://", "postgresql+psycopg2://", 1)
+    elif url.startswith("postgresql://") and not url.startswith("postgresql+"):
+        url = url.replace("postgresql://", "postgresql+psycopg2://", 1)
     return url
 
 db_url = sanitize_db_url(settings.DATABASE_URL)
